@@ -47,7 +47,4 @@ post '/log_page' do
     erb :log_in
   end
 
-
-
-
 end

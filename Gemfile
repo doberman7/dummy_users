@@ -1,5 +1,8 @@
 source :rubygems
 
+#https://github.com/hallelujah/valid_email
+gem 'valid_email'
+
 # PostgreSQL driver
 gem 'pg'
 

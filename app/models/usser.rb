@@ -1,9 +1,10 @@
+require 'valid_email'
+
+
 class Usser < ActiveRecord::Base
 	validates :name, presence: true
-	validates :email, presence: true
+	validates :email, presence: true, email: true
 	validates :password, presence: true
-
-
 
 	# http://api.rubyonrails.org/classes/ActiveRecord/Base.html
 	def self.authenticate(email, password)
