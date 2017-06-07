@@ -5,9 +5,17 @@
 		<title></title>
 	</head>
 	<body>
-		<h1>logearse</h1>
-		<form class="form" action="index.html" method="post">
+		<% if @autentication%>
+			<p>advert</p>
+		<%end%>
 
+		<h1>Logearse</h1>
+		<form class="frm" action="/user_page" method="post">
+			<p>Ingresa email</p>
+			<input type="text" name="email" >
+			<p>Ingresa password</p>
+			<input type="text" name="password">
+			<input type="submit" >
 		</form>
 	</body>
 </html>
