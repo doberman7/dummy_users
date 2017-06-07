@@ -1,4 +1,6 @@
 
+
+
 get '/' do
   erb :index
 end
@@ -6,7 +8,6 @@ end
 get '/sign' do
   erb :sign_up
 end
-#logearse
 get '/log' do
   erb :log_in
 end
@@ -28,11 +29,10 @@ post '/signUP' do
   else
     erb :index
   end
-
 end
 
 # Página secreta
-post '/user_page' do
+post '/log_page' do
   puts "-" * 100
   em = params[:email]
   pass = params[:password]
@@ -43,7 +43,8 @@ post '/user_page' do
   if @autentication !=nil
      erb :secret_page
   else
-     erb :log_in
+    @advert = true
+    erb :log_in
   end
 
 
