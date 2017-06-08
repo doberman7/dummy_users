@@ -24,6 +24,8 @@
       <%=@user.name if @user!=nil%>
       <%session[:saved_message].clear%>
     <%end%>
+
+
     <%= yield %>
   </div>
 </body>
