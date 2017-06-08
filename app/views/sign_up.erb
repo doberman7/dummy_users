@@ -8,4 +8,9 @@
   <p>Crear passwors</p>
   <input type="text" name="user_password" >
   <input type="submit" >
+
+  <% if @error %>
+    <p> <%=@error %> </p>
+  <% end %>
+  
 </form>

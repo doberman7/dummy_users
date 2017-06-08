@@ -6,8 +6,7 @@ set :app_file, __FILE__
 configure do
   # Revisa: http://www.sinatrarb.com/faq.html#sessions
   enable :sessions
-  set :session_secret, ENV['SESSION_SECRET'] || 'this is a secret shhhhh'
-
+  set :session_secret, ENV['SESSION_SECRET'] || 'this is a secret shhhhh'  
   # Hace un set de las views a:
   set :views, File.join(Sinatra::Application.root, "app", "views")
 end

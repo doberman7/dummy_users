@@ -1,8 +1,9 @@
+#GEMA que valida el formato del correo
 require 'valid_email'
-
 
 class Usser < ActiveRecord::Base
 	validates :name, presence: true
+	#la validacion del formato del correo incluye su presencia y formato
 	validates :email, presence: true, email: true
 	validates :password, presence: true
 

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- 
-    normalize.css remueve las diferenecia que hay entre browsers segun los defaults de css predeterminados que utilizan. 
+  <!--
+    normalize.css remueve las diferenecia que hay entre browsers segun los defaults de css predeterminados que utilizan.
     Revisa: http://necolas.github.com/normalize.css/
   -->
   <link rel="stylesheet" href="/css/normalize.css">
@@ -18,6 +18,11 @@
 </head>
 <body>
   <div class="container">
+    <%if session[:saved_message]%>
+      <%=session[:saved_message]%>
+      <%=@user.name if @user!=nil%>
+      <%session[:saved_message].clear%>
+    <%end%>
     <%= yield %>
   </div>
 </body>
