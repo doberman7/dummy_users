@@ -1,15 +1,15 @@
 #permitir sesiones donde se
 enable :sessions
-#-----------
+#-----------------------------------------------------
 #Evitar que un error de validacion se vea directamente..
 require 'sinatra'
 set :show_exceptions, false
 #The exception object can be obtained from the sinatra.error Rack variable:
 error do#.. en lugar de eso se lanza esta opcion
-  @error = "something's FUCK IT UP"
-  erb :sign_up
+  @fuck = "something's FUCK IT UP on      case @user.valid? in       'post '/signUP' "
+  # erb :sign_up
 end
-#-----------
+#-----------------------------------------------------
 #peticion GET a pagina de inicio
 get '/' do
   erb :index
@@ -26,27 +26,55 @@ end
 #accion si se escoge el boton de "sign"
 post '/signUP' do
   # Asignar a @user entradas del formulario en los PARAMS name, email y password
-@user = Usser.create!(name: params[:user_name],email: params[:user_email],password: params[:user_password])
-#si se logra salvar el modelo usser
-  if  @user.save!
-  #se ve en consola y en layout:
-  p session[:saved_message] = "Successfully stored the name: "#en layout se establecio que se visualize el @user.name si este no es nil
-  #renderear pagina de lof in
-   erb :log_in
-  # en caso de bo sa
-  else
-    p "NOOOOOO"
+user = Usser.new(name: params[:user_name],email: params[:user_email],password: params[:user_password])
 
+
+=begin
+  OPCIONES PARA VALIDAR EL OBJETO
+  No usar create! ya que inserta en la BD inmediatamente, impidiendo posteriores mensajes, etc.
+
+  @user.valid?#=> true ior false
+
+  @user.validate!#=> boolean, pero en false detiene las demas accciones
+
+  @user.save!#=> true o ActiveRecord::RecordInvalid, detiene las demas acciones
+
+   @user.errors.any?#=>true
+
+  @user.errors.full_messages#=>[array of errors]
+
+=end
+  case user.valid?
+    when true
+      @user = user
+      @user.save!
+      #se ve en consola y en layout:
+      p "*" * 100
+      p session[:saved_message] = "Successfully stored the name: "#en layout se establecio que se visualize el @user.name si este no es nil
+      #renderear pagina de lof in
+      p "*"*100
+      erb :log_in
+    when false
+       @error = user.errors.full_messages.each do |e|
+         p e
+      end
+      erb :sign_up
+    else
+      error
+      p user
   end
+
 end
 
 # peticion si el login es exitoso
 post '/log_page' do
-  puts "-" * 100
+
   #Autenticar objeto con metodo ".authenticate" creado en MODELO con lo inputs del formulario
   @autentication =  Usser.authenticate(params[:email], params[:password])
   #mostrar inputs en consola
+  puts "-" * 100
   p @autentication.itself
+  puts "-" * 100
   #SI la autenticacion no es nil
   if @autentication !=nil
     #ir a pagina secreta

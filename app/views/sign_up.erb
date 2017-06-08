@@ -8,10 +8,14 @@
   <p>Crear passwors</p>
   <input type="text" name="user_password" >
   <input type="submit" >
-
+  <!--Si existe la var error-->
   <% if @error %>
   <br>
-    <%=@error %>
+    <!--el array de errores es iterado cada vez  -->
+    <%@error.each do |e| %>
+      <!-- cada uno es mostrado agregandole un espacio entre cada uno-->
+      <%=e%><br>
+    <%end%>
   <% end %>
 
 
