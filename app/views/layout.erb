@@ -18,6 +18,7 @@
 </head>
 <body>
   <div class="container">
+    <!--sesions es habilitado en el controlador-->
     <%if session[:saved_message]%>
       <%=session[:saved_message]%>
       <%=@user.name if @user!=nil%>
