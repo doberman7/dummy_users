@@ -17,12 +17,13 @@ before '/' do
     p session[:user_datails]= "SESION TERMINADA"
     session[:user_datails].clear
     session[:goodbye] = "vuelve pronto"
-  else    
+  else
     p session[:goodbye].clear
   end
 end
 #peticion GET a pagina de inicio
 get '/' do
+  session[:rong_log_in].clear if session[:rong_log_in].class == String
   erb :index
 end
 # Crear cuenta de usuario
@@ -81,28 +82,39 @@ end#FIN de post '/log_page'
 
 before '/secret/:user' do
   p "BEFORE SECRETE USER" + "<" * 100
+  # Asignar boleano si en caso de que la session se clase user
   p user = session[:user_datails].class == Usser
+
   case user
+  # in the case that user is true
   when true
     p "session[:user_datails] NO ES NIL" + "<"*100
+    # asign var name to see in the view
      @name = session[:user_datails].name
+     # asign var id to see in the view
      @id = session[:user_datails].id
-     session[:rong_log_in].clear
+    #  despejar la sessiin que mensajea un login errorneo
+     session[:rong_log_in].clear if session[:rong_log_in] != nil
+  # if user false
   when false
-    #CONVERTIT en SESIONSS
-    p session[:rong_log_in] = "Email o password incorrectos "
+    #SESIONSS display the message of rong login
+    p session[:rong_log_in] = "Email o password incorrectos, favor de logearse con credenciales validas "
     #renderear log_in nuevamente
     redirect to'/log'
   end
 
 end
-
+#ruta para el pagina secreta
 get '/secret/:user'do
-  session[:rong_log_in].clear
+  # purgar session login equivocado
+  session[:rong_log_in].clear if session[:rong_log_in] != nil
+  session[:rong_log_in].clear if session[:rong_log_in].class == String
+  # reder pagina secreta
   erb :secret_page#=>GET
 end
-
+# posterio a render de la pagina secreta
 after '/secret/:user' do
   p 'after /secret/:user' + "."*100
+  # creaser session con la fecha actual
   p session[:time] = Time.now
 end
