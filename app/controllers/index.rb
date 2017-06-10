@@ -1,4 +1,4 @@
-#permitir sesiones donde se
+#A session is a way for a web application to set a cookie that persists an identifier across multiple HTTP requests, and then relate these requests to each other
 enable :sessions
 #-----------------------------------------------------
 #Evitar que un error de validacion se vea directamente..
@@ -10,16 +10,37 @@ enable :sessions
 #   # erb :sign_up
 # end
 #-----------------------------------------------------
+before '/' do
+
+  if session[:user_datails] != ""
+    p "BEFORE /" + "=" * 100
+    p session[:user_datails]= "SESION TERMINADA"
+    session[:user_datails].clear
+    session[:goodbye] = "vuelve pronto"
+  else    
+    p session[:goodbye].clear
+  end
+end
 #peticion GET a pagina de inicio
 get '/' do
   erb :index
 end
 # Crear cuenta de usuario
+before '/sign' do
+  session[:goodbye].clear
+end
 get '/sign' do
+  session[:goodbye].clear
   erb :sign_up
 end
 # Logearse como usuario existente
+
+before '/log' do
+  session[:goodbye].clear
+end
+
 get '/log' do
+  session[:goodbye].clear
   erb :log_in
 end
 
@@ -27,21 +48,6 @@ end
 post '/signUP' do
   # Asignar a @user entradas del formulario en los PARAMS name, email y password
   user = Usser.new(name: params[:user_name],email: params[:user_email],password: params[:user_password])
-
-=begin
-  OPCIONES PARA VALIDAR EL OBJETO
-  No usar create! ya que inserta en la BD inmediatamente, impidiendo posteriores mensajes, etc.
-
-  @user.valid?#=> true ior false
-
-  @user.validate!#=> boolean, pero en false detiene las demas accciones
-
-  @user.save!#=> true o ActiveRecord::RecordInvalid, detiene las demas acciones
-
-   @user.errors.any?#=>true
-
-  @user.errors.full_messages#=>[array of errors]
-=end
   case user.valid?
     when true
       @user = user
@@ -57,9 +63,10 @@ post '/signUP' do
          p e
       end
       erb :sign_up
-    else
-      error
-      p user
+    # Para el sinatra error Stack
+    # else
+    #   error
+    #   p user
   end
 
 end#fin de post '/signUP'
@@ -69,21 +76,33 @@ post '/log_page' do
   #Autenticar objeto con metodo ".authenticate" creado en MODELO con lo inputs del formulario
   p "AUTETICACION y creacion de SESSION" + "-"*100
   p session[:user_datails] =  Usser.authenticate(params[:email], params[:password])
-  redirect to '/secrete/:user'
+  redirect to '/secret/:user'
 end#FIN de post '/log_page'
 
-before '/secrete/:user' do
-  if session[:user_datails] != nil
+before '/secret/:user' do
+  p "BEFORE SECRETE USER" + "<" * 100
+  p user = session[:user_datails].class == Usser
+  case user
+  when true
+    p "session[:user_datails] NO ES NIL" + "<"*100
      @name = session[:user_datails].name
-  elsif session[:user_datails] == nil
+     @id = session[:user_datails].id
+     session[:rong_log_in].clear
+  when false
     #CONVERTIT en SESIONSS
-    @advert = "VALORES INGRESADOS ERRONEOS"
+    p session[:rong_log_in] = "Email o password incorrectos "
     #renderear log_in nuevamente
     redirect to'/log'
   end
 
 end
 
-get '/secrete/:user'do
-   erb :secret_page#=>GET
+get '/secret/:user'do
+  session[:rong_log_in].clear
+  erb :secret_page#=>GET
+end
+
+after '/secret/:user' do
+  p 'after /secret/:user' + "."*100
+  p session[:time] = Time.now
 end

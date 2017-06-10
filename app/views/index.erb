@@ -1,10 +1,12 @@
   <h1>Bienvenido a Sinatra!</h1>
   <p>Este es esqueleto de sinatra que armamos para ti</p>
-
-<form class="" action="/sign" method="get" name="formulario">
-  <input type="submit" name="go_to_sign_in" value="SIGN IN">
-</form>
-<br>
-<form class="" action="/log" method="get">
-  <input type="submit" name="go_to_log_in" value="LOG IN">
-</form>
+    <br>
+      <%=session[:goodbye] if session[:goodbye] != nil%>
+    <br>
+    <form class="" action="/sign" method="get" name="formulario">
+      <input type="submit" name="go_to_sign_in" value="SIGN IN">
+    </form>
+    <br>
+    <form class="" action="/log" method="get">
+      <input type="submit" name="go_to_log_in" value="LOG IN">
+    </form>
